@@ -123,6 +123,17 @@ class TestYourCustomerServer(TestCase):
         data = resp.get_json()
         logging.debug("Response data = %s", data)
         self.assertIn("was not found", data["message"])
+    
+    def test_list_all_customer(self):
+        """It should list all Customers"""
+        customerlist=self._create_customers(5)
+        # test_customer = self._create_customers(5)[0]
+        resp = self.client.get(f"{BASE_URL}")
+        data = resp.get_json()
+        self.assertIsInstance(data,list)
+        self.assertEqual(5,len(data))
+        logging.debug("Response data = %s", data)
+    
     ######################################################################
     #  T E S T   S A D   P A T H S
     ######################################################################
