@@ -117,7 +117,7 @@ class Address(db.Model, PersistentBase):
             data (dict): A dictionary containing the resource data
         """
         try:
-            self.customer_id = data["customer_id"]
+            # self.customer_id = data["customer_id"]
             self.name = data["name"]
             self.street = data["street"]
             self.city = data["city"]
