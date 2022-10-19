@@ -123,7 +123,7 @@ def delete_customers(customer_id):
     This endpoint will delete a customer based the id specified in the path
     """
     app.logger.info("Request to delete customer with id: %s", customer_id)
-    customer = customer.find(customer_id)
+    customer = Customer.find(customer_id)
     if customer:
         customer.delete()
 
