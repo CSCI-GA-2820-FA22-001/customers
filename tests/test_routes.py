@@ -51,6 +51,16 @@ class TestYourCustomerServer(TestCase):
     def tearDown(self):
         db.session.remove()
 
+    def test_delete_customer(self):
+        """It should Delete a customer"""
+        test_customer = self._create_customers(1)[0]
+        response = self.client.delete(f"{BASE_URL}/{test_customer.id}")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(len(response.data), 0)
+        # make sure they are deleted
+        response = self.client.get(f"{BASE_URL}/{test_customer.id}")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     def _create_customers(self, count):
         """Factory method to create customers in bulk"""
         customers = []
