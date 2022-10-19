@@ -110,6 +110,29 @@ def list_customers():
     customers = [customer.serialize() for customer in Customer.all()]
     return jsonify(customers)
     
+
+
+######################################################################
+# DELETE A customer
+######################################################################
+@app.route("/customers/<int:customer_id>", methods=["DELETE"])
+def delete_customers(customer_id):
+    """
+    Delete a customer
+
+    This endpoint will delete a customer based the id specified in the path
+    """
+    app.logger.info("Request to delete customer with id: %s", customer_id)
+    customer = customer.find(customer_id)
+    if customer:
+        customer.delete()
+
+    app.logger.info("customer with ID [%s] delete complete.", customer_id)
+    return "", status.HTTP_204_NO_CONTENT
+
+
+
+
 ######################################################################
 # UPDATE AN EXISTING Customer
 ######################################################################
