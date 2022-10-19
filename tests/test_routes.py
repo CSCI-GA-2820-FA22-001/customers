@@ -164,3 +164,8 @@ class TestYourCustomerServer(TestCase):
         """It should not Create a Customer with bad content type"""
         response = self.client.post(BASE_URL, headers={'Content-Type': 'notJSON'})
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+
+    def test_update_customer_not_found(self):
+        """It should not Update a Customer who doesn't exist"""
+        response = self.client.put(f"{BASE_URL}/0", json={})
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
