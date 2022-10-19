@@ -96,6 +96,21 @@ def get_customers(customer_id):
     return jsonify(customer.serialize()), status.HTTP_200_OK
 
 ######################################################################
+# LIST ALL CUSTOMERS
+######################################################################
+@app.route("/customers", methods=["GET"])
+def list_customers():
+    """
+    List all Customers
+    This endpoint will list all Customers currently listed in the database
+     Returns:
+        json: an array of customer data
+    """
+    app.logger.info("Request to list all customers")
+    customers = [customer.serialize() for customer in Customer.all()]
+    return jsonify(customers)
+    
+######################################################################
 # UPDATE AN EXISTING Customer
 ######################################################################
 @app.route("/customers/<int:customer_id>", methods=["PUT"])

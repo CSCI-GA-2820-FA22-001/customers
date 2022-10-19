@@ -124,6 +124,16 @@ class TestYourCustomerServer(TestCase):
         data = resp.get_json()
         logging.debug("Response data = %s", data)
         self.assertIn("was not found", data["message"])
+    
+    def test_list_all_customer(self):
+        """It should list all Customers"""
+        customerlist=self._create_customers(5)
+        # test_customer = self._create_customers(5)[0]
+        resp = self.client.get(f"{BASE_URL}")
+        data = resp.get_json()
+        self.assertIsInstance(data,list)
+        self.assertEqual(5,len(data))
+        logging.debug("Response data = %s", data)
    
     def test_update_customer(self):
         """It should Update an existing Customer"""
@@ -154,3 +164,8 @@ class TestYourCustomerServer(TestCase):
         """It should not Create a Customer with bad content type"""
         response = self.client.post(BASE_URL, headers={'Content-Type': 'notJSON'})
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+
+    def test_update_customer_not_found(self):
+        """It should not Update a Customer who doesn't exist"""
+        response = self.client.put(f"{BASE_URL}/0", json={})
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
