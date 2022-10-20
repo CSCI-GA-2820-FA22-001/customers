@@ -57,11 +57,190 @@ tests/              - test cases package
 
 ## API Calls Available 
 #### 1. ADD A NEW CUSTOMER  (POST)
-#### 2. RETRIEVE A CUSTOMER (GET /:id)
-#### 3. LIST ALL CUSTOMERS  (GET)
-#### 4. DELETE A CUSTOMER   (DELETE)
-#### 5. UPDATE AN EXISTING CUSTOMER (PUT)
+### Request
+```
+{
+  "f_name": "John",
+  "l_name": "Doe",
+  "active": true,
+  "addresses": [{
+  
+  "name": "home",
+  "street": "4th St",
+  "city": "New York",
+  "state": "NY",
+  "postalcode": "10003"
+  }]
+}
+```
 
+### Response
+
+```
+{
+  "active": true,
+  "addresses": [
+    {
+      "city": "New York",
+      "customer_id": 400,
+      "id": 1,
+      "name": "home",
+      "postalcode": "10003",
+      "state": "NY",
+      "street": "4th St"
+    }
+  ],
+  "f_name": "John",
+  "id": 400,
+  "l_name": "Doe"
+}
+
+```
+#### 2. RETRIEVE A CUSTOMER (GET /id)
+
+To `retrieve` a single customer with the respective id, use:
+
+```
+http://localhost:8000/customers/id
+```
+
+### Response
+```
+{
+  "active": true,
+  "addresses": [
+    {
+      "city": "New York",
+      "customer_id": 400,
+      "id": 1,
+      "name": "home",
+      "postalcode": "10003",
+      "state": "NY",
+      "street": "4th St"
+    }
+  ],
+  "f_name": "John",
+  "id": 400,
+  "l_name": "Doe"
+}
+```
+#### 3. LIST ALL CUSTOMERS  (GET)
+
+To `list all` customers, use:
+
+```
+http://localhost:8000/customers
+```
+
+### Response
+```
+[
+  {
+    "active": true,
+    "addresses": [
+      {
+        "city": "New York",
+        "customer_id": 401,
+        "id": 3,
+        "name": "home",
+        "postalcode": "10003",
+        "state": "NY",
+        "street": "4th St"
+      }
+    ],
+    "f_name": "John",
+    "id": 401,
+    "l_name": "Doe"
+  },
+  {
+    "active": true,
+    "addresses": [
+      {
+        "city": "New York",
+        "customer_id": 402,
+        "id": 4,
+        "name": "home",
+        "postalcode": "10003",
+        "state": "NY",
+        "street": "4th St"
+      }
+    ],
+    "f_name": "John",
+    "id": 402,
+    "l_name": "Doe2"
+  },
+  {
+    "active": true,
+    "addresses": [
+      {
+        "city": "New York",
+        "customer_id": 403,
+        "id": 5,
+        "name": "home",
+        "postalcode": "10003",
+        "state": "NY",
+        "street": "4th St"
+      }
+    ],
+    "f_name": "John",
+    "id": 403,
+    "l_name": "Doe3"
+  }
+]
+```
+#### 4. DELETE A CUSTOMER   (DELETE /id)
+No body is required. `Status` returned:
+```
+204 NO CONTENT
+```
+#### 5. UPDATE AN EXISTING CUSTOMER (PUT/id)
+
+### Request
+```
+{
+  "f_name": "John",
+  "l_name": "Doe",
+  "active": false,
+  "addresses": [{
+  
+  "name": "home",
+  "street": "4th St",
+  "city": "New York",
+  "state": "NY",
+  "postalcode": "10003"
+  }]
+}
+```
+
+### Response
+```
+{
+  "active": false,
+  "addresses": [
+    {
+      "city": "New York",
+      "customer_id": 400,
+      "id": 1,
+      "name": "home",
+      "postalcode": "10003",
+      "state": "NY",
+      "street": "4th St"
+    },
+    {
+      "city": "New York",
+      "customer_id": 400,
+      "id": 2,
+      "name": "home",
+      "postalcode": "10003",
+      "state": "NY",
+      "street": "4th St"
+    }
+  ],
+  "f_name": "John",
+  "id": 400,
+  "l_name": "Doe"
+}
+```
 ## How To Test
 To test the code from the VScode terminal, run: 
 ```
