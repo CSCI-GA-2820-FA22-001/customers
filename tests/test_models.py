@@ -7,7 +7,7 @@ import os
 from service import app
 
 
-from service.models import Customer, Address, DataValidationError, db
+from service.models import Customer, Address, DataValidationError, PersistentBase, db
 from tests.factories import CustomerFactory, AddressFactory
 
 DATABASE_URI = os.getenv(
@@ -47,6 +47,11 @@ class TestCustomer(unittest.TestCase):
     ######################################################################
     #  T E S T   C A S E S
     ######################################################################
+
+    def test_init(self):
+        """It should Create a base object with id None"""
+        customer = PersistentBase()
+        self.assertEqual(customer.id, None)
 
     def test_create_a_customer(self):
         """It should Create a Customer and assert that it exists"""
