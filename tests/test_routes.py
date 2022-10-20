@@ -5,6 +5,7 @@ Test cases can be run with the following:
   nosetests -v --with-spec --spec-color
   coverage report -m
 """
+import json
 import os
 import logging
 from unittest import TestCase
@@ -51,8 +52,6 @@ class TestYourCustomerServer(TestCase):
     def tearDown(self):
         db.session.remove()
 
-    
-
     def _create_customers(self, count):
         """Factory method to create customers in bulk"""
         customers = []
@@ -63,7 +62,7 @@ class TestYourCustomerServer(TestCase):
             self.assertEqual(
                 response.status_code, status.HTTP_201_CREATED, "Could not create test customer"
             )
-            
+
             print(test_customer)
             new_customer= response.get_json()
             test_customer.id = new_customer["id"]
@@ -89,15 +88,15 @@ class TestYourCustomerServer(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # Make sure location header is set
-        #location = response.headers.get("Location", None)
-        #self.assertIsNotNone(location)
+        # location = response.headers.get("Location", None)
+        # self.assertIsNotNone(location)
 
         # Check the data is correct
         new_customer = response.get_json()
         self.assertEqual(new_customer["f_name"], test_customer.f_name)
         self.assertEqual(new_customer["l_name"], test_customer.l_name)
         self.assertEqual(new_customer["active"], test_customer.active)
-        #self.assertEqual(new_customer["addresses"], test_customer.addresses.id)
+        # self.assertEqual(new_customer["addresses"], test_customer.addresses.id)
 
         # Check that the location header was correct
         """ response = self.client.get(location)
@@ -105,8 +104,8 @@ class TestYourCustomerServer(TestCase):
         new_customer = response.get_json()
         self.assertEqual(new_customer["f_name"], test_customer.f_name)
         self.assertEqual(new_customer["l_name"], test_customer.l_name)
-        self.assertEqual(new_customer["active"], test_customer.active) """
-       #self.assertEqual(new_customer["addresses"], test_customer.addresses.id)
+        self.assertEqual(new_customer["active"], test_customer.active) 
+        self.assertEqual(new_customer["addresses"], test_customer.addresses.id)"""
 
     def test_get_customer(self):
         """It should Get a single Customer"""
@@ -129,7 +128,7 @@ class TestYourCustomerServer(TestCase):
         # make sure they are deleted
         response = self.client.get(f"{BASE_URL}/{test_customer.id}")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-    
+
     def test_get_customer_not_found(self):
         """It should not Get a Customer thats not found"""
         resp = self.client.get(f"{BASE_URL}/0")
@@ -137,7 +136,7 @@ class TestYourCustomerServer(TestCase):
         data = resp.get_json()
         logging.debug("Response data = %s", data)
         self.assertIn("was not found", data["message"])
-    
+
     def test_list_all_customer(self):
         """It should list all Customers"""
         customerlist=self._create_customers(5)
@@ -147,7 +146,7 @@ class TestYourCustomerServer(TestCase):
         self.assertIsInstance(data,list)
         self.assertEqual(5,len(data))
         logging.debug("Response data = %s", data)
-   
+
     def test_update_customer(self):
         """It should Update an existing Customer"""
         # create a Customer to update
@@ -167,6 +166,15 @@ class TestYourCustomerServer(TestCase):
     ######################################################################
     #  T E S T   S A D   P A T H S
     ######################################################################
+    def test_bad_request(self):
+        """It should not allow bad request"""
+        response = self.client.post(BASE_URL, json={"name":" "})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_unsupported_HTTP_request(self):
+        """It should not allow unsupported HTTP methods"""
+        response = self.client.patch(BASE_URL)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_create_customer_no_content_type(self):
         """It should not Create a Customer with no content type"""
