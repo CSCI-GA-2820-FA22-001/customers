@@ -55,6 +55,54 @@ tests/              - test cases package
 └── test_routes.py  - test suite for service routes
 ```
 
+## API Calls Available 
+#### 1. ADD A NEW CUSTOMER  (POST)
+#### 2. RETRIEVE A CUSTOMER (GET /:id)
+#### 3. LIST ALL CUSTOMERS  (GET)
+#### 4. DELETE A CUSTOMER   (DELETE)
+#### 5. UPDATE AN EXISTING CUSTOMER (PUT)
+
+## How To Test
+To test the code from the VScode terminal, run: 
+```
+nosetests
+```
+To see the lines that were not tested in the coverage report, use:
+```
+coverage report -m
+```
+
+
+## How To Run
+To start the service in the VScode terminal write:
+``` 
+honcho start 
+```
+
+If Thunder Client is not readily available:
+
+To run the service internally, you can use the extension "Thunder Client". It can be downloaded by naviagting to "extensions" tab in VScode and searching for "Thunder CLient".
+
+Once in the client, user can choose between
+```
+GET
+POST
+PUT
+DELETE
+```
+followed by: 
+```
+http://localhost:8000/customers
+```
+
+NOTE: In POST & PUT, JSON content with the desired information needs to be inserted in the body. 
+
+### Using Curl Command
+
+Alternatively, we can see our calls response using curl in the terminal. To see the headers, use:
+```
+curl -i http://localhost:8000/customers
+```
 ## License
 
 Copyright (c) John Rofrano. All rights reserved.
