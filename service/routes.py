@@ -4,7 +4,7 @@ My Service
 Describe what your service does here
 """
 
-from flask import jsonify, request, abort
+from flask import jsonify, request, abort, url_for
 from .common import status  # HTTP Status Codes
 from service.models import Customer
 
@@ -63,10 +63,10 @@ def create_customers():
     customer.deserialize(request.get_json())
     customer.create()
     message = customer.serialize()
-    # location_url = url_for("get_customers", customer_id=customer.id, _external=True)
+    location_url = url_for("get_customers", customer_id=customer.id, _external=True)
 
     app.logger.info("Customer with ID [%s] created.", customer.id)
-    return jsonify(message), status.HTTP_201_CREATED  # , {"Location": location_url}
+    return jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
 
 
 ######################################################################

@@ -86,8 +86,8 @@ class TestYourCustomerServer(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # Make sure location header is set
-        # location = response.headers.get("Location", None)
-        # self.assertIsNotNone(location)
+        location = response.headers.get("Location", None)
+        self.assertIsNotNone(location)
 
         # Check the data is correct
         new_customer = response.get_json()
@@ -97,13 +97,13 @@ class TestYourCustomerServer(TestCase):
         # self.assertEqual(new_customer["addresses"], test_customer.addresses.id)
 
         # Check that the location header was correct
-        """ response = self.client.get(location)
+        response = self.client.get(location)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         new_customer = response.get_json()
         self.assertEqual(new_customer["f_name"], test_customer.f_name)
         self.assertEqual(new_customer["l_name"], test_customer.l_name)
-        self.assertEqual(new_customer["active"], test_customer.active) 
-        self.assertEqual(new_customer["addresses"], test_customer.addresses.id)"""
+        self.assertEqual(new_customer["active"], test_customer.active)
+        # self.assertEqual(new_customer["addresses"], test_customer.addresses.id)
 
     def test_get_customer(self):
         """It should Get a single Customer"""
