@@ -16,6 +16,7 @@
 Test Factory to make fake objects for testing
 """
 from datetime import date
+
 import factory
 from factory.fuzzy import FuzzyChoice, FuzzyDate
 from service.models import Customer, Address
@@ -33,11 +34,12 @@ class CustomerFactory(factory.Factory):
     f_name = factory.Faker("name")
     l_name = factory.Faker("name")
     active = True
+
     # the many side of relationships can be a little wonky in factory boy:
     # https://factoryboy.readthedocs.io/en/latest/recipes.html#simple-many-to-many-relationship
 
     @factory.post_generation
-    def addresses(self, create, extracted, **kwargs):   # pylint: disable=method-hidden, unused-argument
+    def addresses(self, create, extracted, **kwargs):  # pylint: disable=method-hidden, unused-argument
         """Creates the addresses list"""
         if not create:
             return

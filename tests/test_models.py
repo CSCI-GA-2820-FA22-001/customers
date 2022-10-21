@@ -2,11 +2,10 @@
 Test cases for Customer Model
 """
 import logging
-import unittest
 import os
+import unittest
+
 from service import app
-
-
 from service.models import Customer, Address, DataValidationError, PersistentBase, db
 from tests.factories import CustomerFactory, AddressFactory
 
@@ -58,9 +57,9 @@ class TestCustomer(unittest.TestCase):
         fake_customer = CustomerFactory()
         # pylint: disable=unexpected-keyword-arg
         customer = Customer(
-            f_name = fake_customer.f_name,
-            l_name = fake_customer.l_name,
-            active = fake_customer.active,
+            f_name=fake_customer.f_name,
+            l_name=fake_customer.l_name,
+            active=fake_customer.active,
         )
         self.assertIsNotNone(customer)
         self.assertEqual(customer.id, None)

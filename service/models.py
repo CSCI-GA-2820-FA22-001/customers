@@ -86,7 +86,7 @@ class Address(db.Model, PersistentBase):
     # Table Schema
     id = db.Column(db.Integer, primary_key=True)
     customer_id = db.Column(db.Integer, db.ForeignKey("customer.id", ondelete="CASCADE"), nullable=False)
-    name = db.Column(db.String(64))  #e.g. primary, summer home, etc
+    name = db.Column(db.String(64))  # e.g. primary, summer home, etc
     street = db.Column(db.String(64))
     city = db.Column(db.String(64))
     state = db.Column(db.String(2))

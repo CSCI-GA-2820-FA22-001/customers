@@ -5,15 +5,13 @@ Test cases can be run with the following:
   nosetests -v --with-spec --spec-color
   coverage report -m
 """
-import json
-import os
 import logging
+import os
 from unittest import TestCase
-from unittest.mock import MagicMock, patch
-from urllib import response
+
 from service import app
-from service.models import Customer, db, init_db
 from service.common import status  # HTTP Status Codes
+from service.models import Customer, db, init_db
 from tests.factories import CustomerFactory
 
 DATABASE_URI = os.getenv(
@@ -33,7 +31,7 @@ class TestYourCustomerServer(TestCase):
         """ This runs once before the entire test suite """
         app.config["TESTING"] = True
         app.config["DEBUG"] = False
-         # Set up the test database
+        # Set up the test database
         app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
         app.logger.setLevel(logging.CRITICAL)
         init_db(app)
@@ -64,7 +62,7 @@ class TestYourCustomerServer(TestCase):
             )
 
             print(test_customer)
-            new_customer= response.get_json()
+            new_customer = response.get_json()
             test_customer.id = new_customer["id"]
             customers.append(test_customer)
         return customers
@@ -118,7 +116,6 @@ class TestYourCustomerServer(TestCase):
         self.assertEqual(data["l_name"], test_customer.l_name)
         self.assertEqual(data["active"], test_customer.active)
 
-
     def test_delete_customer(self):
         """It should Delete a customer"""
         test_customer = self._create_customers(1)[0]
@@ -139,12 +136,12 @@ class TestYourCustomerServer(TestCase):
 
     def test_list_all_customer(self):
         """It should list all Customers"""
-        customerlist=self._create_customers(5)
+        customerlist = self._create_customers(5)
         # test_customer = self._create_customers(5)[0]
         resp = self.client.get(f"{BASE_URL}")
         data = resp.get_json()
-        self.assertIsInstance(data,list)
-        self.assertEqual(5,len(data))
+        self.assertIsInstance(data, list)
+        self.assertEqual(5, len(data))
         logging.debug("Response data = %s", data)
 
     def test_update_customer(self):
@@ -157,18 +154,18 @@ class TestYourCustomerServer(TestCase):
         # update the customer
         new_customer = response.get_json()
         logging.debug(new_customer)
-        #new_customer["category"] = "unknown"
+        # new_customer["category"] = "unknown"
         response = self.client.put(f"{BASE_URL}/{new_customer['id']}", json=new_customer)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         updated_customer = response.get_json()
-        #self.assertEqual(updated_customer["category"], "unknown")
+        # self.assertEqual(updated_customer["category"], "unknown")
 
     ######################################################################
     #  T E S T   S A D   P A T H S
     ######################################################################
     def test_bad_request(self):
         """It should not allow bad request"""
-        response = self.client.post(BASE_URL, json={"name":" "})
+        response = self.client.post(BASE_URL, json={"name": " "})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_unsupported_HTTP_request(self):
