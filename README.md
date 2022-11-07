@@ -59,8 +59,8 @@ tests/              - test cases package
 ### Request
 ```
 {
-  "f_name": "John",
-  "l_name": "Doe",
+  "first_name": "John",
+  "last_name": "Doe",
   "active": true,
   "addresses": [{
   
@@ -89,9 +89,9 @@ tests/              - test cases package
       "street": "4th St"
     }
   ],
-  "f_name": "John",
+  "first_name": "John",
   "id": 400,
-  "l_name": "Doe"
+  "last_name": "Doe"
 }
 
 ```
@@ -118,9 +118,9 @@ http://localhost:8000/customers/id
       "street": "4th St"
     }
   ],
-  "f_name": "John",
+  "first_name": "John",
   "id": 400,
-  "l_name": "Doe"
+  "last_name": "Doe"
 }
 ```
 #### 3. LIST ALL CUSTOMERS  (GET)
@@ -147,9 +147,9 @@ http://localhost:8000/customers
         "street": "4th St"
       }
     ],
-    "f_name": "John",
+    "first_name": "John",
     "id": 401,
-    "l_name": "Doe"
+    "last_name": "Doe"
   },
   {
     "active": true,
@@ -164,9 +164,9 @@ http://localhost:8000/customers
         "street": "4th St"
       }
     ],
-    "f_name": "John",
+    "first_name": "John",
     "id": 402,
-    "l_name": "Doe2"
+    "last_name": "Doe2"
   },
   {
     "active": true,
@@ -181,9 +181,9 @@ http://localhost:8000/customers
         "street": "4th St"
       }
     ],
-    "f_name": "John",
+    "first_name": "John",
     "id": 403,
-    "l_name": "Doe3"
+    "last_name": "Doe3"
   }
 ]
 ```
@@ -197,8 +197,8 @@ No body is required. `Status` returned:
 ### Request
 ```
 {
-  "f_name": "John",
-  "l_name": "Doe",
+  "first_name": "John",
+  "last_name": "Doe",
   "active": false,
   "addresses": [{
   
@@ -235,9 +235,9 @@ No body is required. `Status` returned:
       "street": "4th St"
     }
   ],
-  "f_name": "John",
+  "first_name": "John",
   "id": 400,
-  "l_name": "Doe"
+  "last_name": "Doe"
 }
 ```
 ## How To Test
