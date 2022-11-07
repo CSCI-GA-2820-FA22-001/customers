@@ -91,8 +91,8 @@ class TestYourCustomerServer(TestCase):
 
         # Check the data is correct
         new_customer = response.get_json()
-        self.assertEqual(new_customer["f_name"], test_customer.f_name)
-        self.assertEqual(new_customer["l_name"], test_customer.l_name)
+        self.assertEqual(new_customer["first_name"], test_customer.f_name)
+        self.assertEqual(new_customer["last_name"], test_customer.l_name)
         self.assertEqual(new_customer["active"], test_customer.active)
         # self.assertEqual(new_customer["addresses"], test_customer.addresses.id)
 
@@ -100,8 +100,8 @@ class TestYourCustomerServer(TestCase):
         response = self.client.get(location)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         new_customer = response.get_json()
-        self.assertEqual(new_customer["f_name"], test_customer.f_name)
-        self.assertEqual(new_customer["l_name"], test_customer.l_name)
+        self.assertEqual(new_customer["first_name"], test_customer.f_name)
+        self.assertEqual(new_customer["last_name"], test_customer.l_name)
         self.assertEqual(new_customer["active"], test_customer.active)
         # self.assertEqual(new_customer["addresses"], test_customer.addresses.id)
 
@@ -112,8 +112,8 @@ class TestYourCustomerServer(TestCase):
         resp = self.client.get(f"{BASE_URL}/{test_customer.id}")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
-        self.assertEqual(data["f_name"], test_customer.f_name)
-        self.assertEqual(data["l_name"], test_customer.l_name)
+        self.assertEqual(data["first_name"], test_customer.f_name)
+        self.assertEqual(data["last_name"], test_customer.l_name)
         self.assertEqual(data["active"], test_customer.active)
 
     def test_delete_customer(self):

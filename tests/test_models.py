@@ -152,8 +152,8 @@ class TestCustomer(unittest.TestCase):
         customer.addresses.append(address)
         serial_customer = customer.serialize()
         self.assertEqual(serial_customer["id"], customer.id)
-        self.assertEqual(serial_customer["f_name"], customer.f_name)
-        self.assertEqual(serial_customer["l_name"], customer.l_name)
+        self.assertEqual(serial_customer["first_name"], customer.f_name)
+        self.assertEqual(serial_customer["last_name"], customer.l_name)
         self.assertEqual(serial_customer["active"], customer.active)
         self.assertEqual(len(serial_customer["addresses"]), 1)
         addresses = serial_customer["addresses"]

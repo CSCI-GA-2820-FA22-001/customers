@@ -157,8 +157,8 @@ class Customer(db.Model, PersistentBase):
         """Serializes a Customer into a dictionary"""
         customer = {
             "id": self.id,
-            "f_name": self.f_name,
-            "l_name": self.l_name,
+            "first_name": self.f_name,
+            "last_name": self.l_name,
             "active": self.active,
             "addresses": [],
         }
@@ -173,8 +173,8 @@ class Customer(db.Model, PersistentBase):
             data (dict): A dictionary containing the resource data
         """
         try:
-            self.f_name = data["f_name"]
-            self.l_name = data["l_name"]
+            self.f_name = data["first_name"]
+            self.l_name = data["last_name"]
             self.active = data["active"]
             # handle inner list of addresses
             address_list = data.get("addresses")
@@ -193,10 +193,10 @@ class Customer(db.Model, PersistentBase):
 
     @classmethod
     def find_by_name(cls, f_name, l_name):
-        """Returns all Customers with the given f_name and l_name
+        """Returns all Customers with the given first_name and last_name
         Args:
-            f_name (string): the f_name of the Customer you want to match
-            l_name (string): the l_name of the Customer you want to match
+            first_name (string): the first_name of the Customer you want to match
+            last_name (string): the last_name of the Customer you want to match
         """
         logger.info("Processing name query for %s %s ...", f_name, l_name)
         return cls.query.filter(cls.f_name == f_name, cls.l_name == l_name)
