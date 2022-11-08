@@ -270,3 +270,44 @@ class TestCustomer(unittest.TestCase):
         # Fetch it back again
         customer = Customer.find(customer.id)
         self.assertEqual(len(customer.addresses), 0)
+    def test_deactivate_customer(self):
+        """It should deactivate a customer"""
+        customer = CustomerFactory()
+        customer.create()
+        # Assert that it was assigned active = True
+        self.assertIsNotNone(customer.id)
+        self.assertEqual(customer.active, True)
+
+        # Fetch it back and deactivate
+        customer = Customer.find(customer.id)
+        customer.deactivate()
+        customer.update()
+
+        # Fetch it back again
+        customer = Customer.find(customer.id)
+        self.assertEqual(customer.active, False)
+    def test_activate_customer(self):
+        """It should activate a customer"""
+        customer = CustomerFactory()
+        customer.create()
+        # Assert that it was assigned active = True
+        self.assertIsNotNone(customer.id)
+        self.assertEqual(customer.active, True)
+
+        # Fetch it back and deactivate
+        customer = Customer.find(customer.id)
+        customer.deactivate()
+        customer.update()
+
+        # Fetch it back again
+        customer = Customer.find(customer.id)
+        self.assertEqual(customer.active, False)
+
+        # Now reactivate it
+        customer.activate()
+        customer.update()
+        
+        # Fetch it back again
+        customer = Customer.find(customer.id)
+        self.assertEqual(customer.active, True)
+        

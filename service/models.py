@@ -168,7 +168,7 @@ class Customer(db.Model, PersistentBase):
 
     def deserialize(self, data):
         """
-        Deserializes a Account from a dictionary
+        Deserializes a Customer from a dictionary
         Args:
             data (dict): A dictionary containing the resource data
         """
@@ -190,6 +190,18 @@ class Customer(db.Model, PersistentBase):
                 "bad or no data - " + error.args[0]
             ) from error
         return self
+
+    def deactivate(self):
+        """
+        Sets the active flag to false
+        """
+        self.active = False
+
+    def activate(self):
+        """
+        Sets the active flag to true
+        """
+        self.active = True
 
     @classmethod
     def find_by_name(cls, f_name, l_name):
