@@ -302,9 +302,12 @@ class TestCustomer(unittest.TestCase):
         # Fetch it back again
         customer = Customer.find(customer.id)
         self.assertEqual(customer.active, False)
+
         # Now reactivate it
         customer.activate()
         customer.update()
+        
         # Fetch it back again
         customer = Customer.find(customer.id)
         self.assertEqual(customer.active, True)
+        
