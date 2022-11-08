@@ -190,11 +190,13 @@ class Customer(db.Model, PersistentBase):
                 "bad or no data - " + error.args[0]
             ) from error
         return self
+
     def deactivate(self):
         """
         Sets the active flag to false
         """
         self.active = False
+
     def activate(self):
         """
         Sets the active flag to true
