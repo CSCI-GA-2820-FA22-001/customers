@@ -212,3 +212,17 @@ class Customer(db.Model, PersistentBase):
         """
         logger.info("Processing name query for %s %s ...", f_name, l_name)
         return cls.query.filter(cls.f_name == f_name, cls.l_name == l_name)
+
+    @classmethod
+    def find_by_activity(cls, active: bool = True) -> list:
+        """Returns all Customers by their activity
+
+        :param active: True for customers that are active
+        :type active: str
+
+        :return: a collection of Customers that are active
+        :rtype: list
+
+        """
+        logger.info("Processing activity query for %s ...", active)
+        return cls.query.filter(cls.active == active)
