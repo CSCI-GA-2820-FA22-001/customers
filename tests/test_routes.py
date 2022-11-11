@@ -136,12 +136,13 @@ class TestYourCustomerServer(TestCase):
 
     def test_list_all_customer(self):
         """It should list all Customers"""
-        customerlist = self._create_customers(5)
+        self._create_customers(5)
         # test_customer = self._create_customers(5)[0]
-        resp = self.client.get(f"{BASE_URL}")
+        resp = self.client.get(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertIsInstance(data, list)
-        self.assertEqual(5, len(data))
+        self.assertEqual(len(data),5)
         logging.debug("Response data = %s", data)
 
     def test_update_customer(self):
@@ -187,3 +188,22 @@ class TestYourCustomerServer(TestCase):
         """It should not Update a Customer who doesn't exist"""
         response = self.client.put(f"{BASE_URL}/0", json={})
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    ######################################################################
+    #  T E S T   Q U E R Y   S T R I N G S
+    ######################################################################
+    def test_query_customers_by_activity(self):
+        """It should Query Customers by Activity"""
+        customers = self._create_customers(10)
+        test_active = customers[0].active
+        active_list = [customer for customer in customers if customer.active == test_active]
+        logging.info(
+            "Active=%s: %d = %s", test_active, len(active_list), active_list
+        )
+        resp = self.client.get(BASE_URL, query_string=f"active={str(test_active)}")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), len(active_list))
+        # check the data just to be sure
+        for customer in data:
+            self.assertEqual(customer["active"], test_active)

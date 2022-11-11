@@ -311,3 +311,14 @@ class TestCustomer(unittest.TestCase):
         customer = Customer.find(customer.id)
         self.assertEqual(customer.active, True)
         
+    def test_find_by_activity(self):
+        """It should Find Customers by Activity"""
+        customers = CustomerFactory.create_batch(10)
+        for customer in customers:
+            customer.create()
+        active = customers[0].active
+        count = len([customer for customer in customers if customer.active == active])
+        found = Customer.find_by_activity(active)
+        self.assertEqual(found.count(), count)
+        for customer in found:
+            self.assertEqual(customer.active, active)

@@ -102,8 +102,20 @@ def list_customers():
         json: an array of customer data
     """
     app.logger.info("Request to list all customers")
-    customers = [customer.serialize() for customer in Customer.all()]
-    return jsonify(customers)
+    customers = []
+
+    active = request.args.get("active")
+
+    if active:
+        app.logger.info("Filtering by active: %s", active)
+        is_active = active.lower() in ["yes", "y", "true", "t", "1"]
+        customers = Customer.find_by_activity(is_active)
+    else:
+        customers = Customer.all()
+
+    results = [customer.serialize() for customer in customers]
+    app.logger.info("Returning %d customers", len(results))
+    return jsonify(results), status.HTTP_200_OK
 
 
 ######################################################################
