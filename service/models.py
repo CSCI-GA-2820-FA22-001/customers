@@ -215,12 +215,12 @@ class Customer(db.Model, PersistentBase):
 
     @classmethod
     def find_by_activity(cls, active: bool = True) -> list:
-        """Returns all Pets by their availability
+        """Returns all Customers by their activity
 
-        :param available: True for pets that are available
-        :type available: str
+        :param active: True for customers that are active
+        :type active: str
 
-        :return: a collection of Pets that are available
+        :return: a collection of Customers that are active
         :rtype: list
 
         """
