@@ -214,4 +214,3 @@ class TestYourCustomerServer(TestCase):
         # check the data just to be sure
         for customer in data:
             self.assertEqual(customer["active"], test_active)
-            
