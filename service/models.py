@@ -85,7 +85,8 @@ class Address(db.Model, PersistentBase):
 
     # Table Schema
     id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.Integer, db.ForeignKey("customer.id", ondelete="CASCADE"), nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey(
+        "customer.id", ondelete="CASCADE"), nullable=False)
     name = db.Column(db.String(64))  # e.g. primary, summer home, etc
     street = db.Column(db.String(64))
     city = db.Column(db.String(64))
@@ -124,7 +125,8 @@ class Address(db.Model, PersistentBase):
             self.state = data["state"]
             self.postalcode = data["postalcode"]
         except KeyError as error:
-            raise DataValidationError("Invalid Address: missing " + error.args[0]) from error
+            raise DataValidationError(
+                "Invalid Address: missing " + error.args[0]) from error
         except TypeError as error:
             raise DataValidationError(
                 "Invalid Address: body of request contained "
@@ -148,7 +150,8 @@ class Customer(db.Model, PersistentBase):
     f_name = db.Column(db.String(64))
     l_name = db.Column(db.String(64))
     active = db.Column(db.Boolean, default=True)
-    addresses = db.relationship("Address", backref="customer", passive_deletes=True)
+    addresses = db.relationship(
+        "Address", backref="customer", passive_deletes=True)
 
     def __repr__(self):
         return f"<Customer {self.f_name} {self.l_name} id=[{self.id}]>"
@@ -183,7 +186,8 @@ class Customer(db.Model, PersistentBase):
                 address.deserialize(json_address)
                 self.addresses.append(address)
         except KeyError as error:
-            raise DataValidationError("Invalid Customer: missing " + error.args[0]) from error
+            raise DataValidationError(
+                "Invalid Customer: missing " + error.args[0]) from error
         except TypeError as error:
             raise DataValidationError(
                 "Invalid Customer: body of request contained "
