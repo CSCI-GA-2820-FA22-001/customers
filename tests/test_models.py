@@ -270,6 +270,7 @@ class TestCustomer(unittest.TestCase):
         # Fetch it back again
         customer = Customer.find(customer.id)
         self.assertEqual(len(customer.addresses), 0)
+
     def test_deactivate_customer(self):
         """It should deactivate a customer"""
         customer = CustomerFactory()
@@ -286,6 +287,7 @@ class TestCustomer(unittest.TestCase):
         # Fetch it back again
         customer = Customer.find(customer.id)
         self.assertEqual(customer.active, False)
+
     def test_activate_customer(self):
         """It should activate a customer"""
         customer = CustomerFactory()
@@ -306,11 +308,11 @@ class TestCustomer(unittest.TestCase):
         # Now reactivate it
         customer.activate()
         customer.update()
-        
+
         # Fetch it back again
         customer = Customer.find(customer.id)
         self.assertEqual(customer.active, True)
-        
+
     def test_find_by_activity(self):
         """It should Find Customers by Activity"""
         customers = CustomerFactory.create_batch(10)

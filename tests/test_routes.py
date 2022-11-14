@@ -77,7 +77,7 @@ class TestYourCustomerServer(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(data["name"], "Customer Demo REST API Service")
-        
+
     def test_health(self):
         """It should be healthy"""
         response = self.client.get("/health")
@@ -149,7 +149,7 @@ class TestYourCustomerServer(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertIsInstance(data, list)
-        self.assertEqual(len(data),5)
+        self.assertEqual(len(data), 5)
         logging.debug("Response data = %s", data)
 
     def test_update_customer(self):
@@ -165,7 +165,7 @@ class TestYourCustomerServer(TestCase):
         # new_customer["category"] = "unknown"
         response = self.client.put(f"{BASE_URL}/{new_customer['id']}", json=new_customer)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        updated_customer = response.get_json()
+        # updated_customer = response.get_json()
         # self.assertEqual(updated_customer["category"], "unknown")
 
     ######################################################################
