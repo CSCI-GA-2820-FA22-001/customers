@@ -7,7 +7,6 @@ Test cases can be run with the following:
 """
 import logging
 import os
-from pickle import FALSE
 from unittest import TestCase
 
 from service import app
