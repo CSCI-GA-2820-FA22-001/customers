@@ -45,7 +45,8 @@ def activate_customer(customer_id):
         abort(status.HTTP_404_NOT_FOUND,
               f"Customer with id '{customer_id}' was not found.")
     customer.activate()
-    app.logger.info("Customer with ID [%s]'s active status is set to [%s].", customer.id, customer.active)
+    app.logger.info("Customer with ID [%s]'s active status is set to [%s].",
+                    customer.id, customer.active)
     return jsonify(customer.serialize()), status.HTTP_200_OK
 
 
@@ -68,7 +69,8 @@ def deactivate_customer(customer_id):
         abort(status.HTTP_404_NOT_FOUND,
               f"Customer with id '{customer_id}' was not found.")
     customer.deactivate()
-    app.logger.info("Customer with ID [%s]'s active status is set to [%s].", customer.id, customer.active)
+    app.logger.info("Customer with ID [%s]'s active status is set to [%s].",
+                    customer.id, customer.active)
     return jsonify(customer.serialize()), status.HTTP_200_OK
 
 
