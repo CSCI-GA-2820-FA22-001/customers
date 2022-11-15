@@ -196,6 +196,16 @@ class TestYourCustomerServer(TestCase):
         response = self.client.put(f"{BASE_URL}/0", json={})
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_activate_customer_not_found(self):
+        """It should not activate a Customer who doesn't exist"""
+        response = self.client.put(f"{BASE_URL}/0/activate", json={})
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_deactivate_customer_not_found(self):
+        """It should not activate a Customer who doesn't exist"""
+        response = self.client.put(f"{BASE_URL}/0/deactivate", json={})
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     ######################################################################
     #  T E S T   Q U E R Y   S T R I N G S
     ######################################################################
