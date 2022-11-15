@@ -7,6 +7,7 @@ Test cases can be run with the following:
 """
 import logging
 import os
+from pickle import FALSE
 from unittest import TestCase
 
 from service import app
@@ -214,3 +215,43 @@ class TestYourCustomerServer(TestCase):
         # check the data just to be sure
         for customer in data:
             self.assertEqual(customer["active"], test_active)
+    
+    def test_deactivate_customer(self):
+        """It should deactivate an existing Customer"""
+        
+        #create a new customer then deactivate it
+        test_customer = CustomerFactory()
+        response = self.client.post(BASE_URL, json=test_customer.serialize())
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        # deactivate one customer
+        new_customer = response.get_json()
+        response = self.client.put(f"{BASE_URL}/{new_customer['id']}/deactivate")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        logging.debug(new_customer)
+        new_customer= response.get_json()
+        self.assertEqual(new_customer["active"],False)
+
+       
+    def test_activate_customer(self):
+        """It should activate an existing Customer"""
+        
+        #create a new customer then deactivate it
+        test_customer = CustomerFactory()
+        response = self.client.post(BASE_URL, json=test_customer.serialize())
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        # deactivate one customer
+        new_customer = response.get_json()
+        response = self.client.put(f"{BASE_URL}/{new_customer['id']}/deactivate")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        logging.debug(new_customer)
+        new_customer= response.get_json()
+        self.assertEqual(new_customer["active"],False)
+        
+        # now activate this customer again
+        response = self.client.put(f"{BASE_URL}/{new_customer['id']}/activate")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        logging.debug(new_customer)
+        new_customer= response.get_json()
+        self.assertEqual(new_customer["active"],True)
+
+    

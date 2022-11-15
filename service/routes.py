@@ -23,6 +23,54 @@ def health():
     """Health Status"""
     return jsonify(dict(status="OK")), status.HTTP_200_OK
 
+
+############################################################
+# Active Endpoint
+############################################################
+
+
+@app.route("/customers/<int:customer_id>/activate", methods=["PUT"])
+def activate_customer(customer_id):
+    """
+    Activate a Customer
+
+    This endpoint will activate a Customer based the body that is posted
+    """
+    
+    app.logger.info("Request to activate customer with id: %s", customer_id)
+   
+    customer = Customer.find(customer_id)
+    if not customer:
+        abort(status.HTTP_404_NOT_FOUND,
+              f"Customer with id '{customer_id}' was not found.")
+    customer.activate()
+    app.logger.info("Customer with ID [%s]'s active status is set to [%s].", customer.id,customer.active)
+    return jsonify(customer.serialize()), status.HTTP_200_OK
+
+# ############################################################
+# # Deactive Endpoint
+# ############################################################
+
+
+@app.route("/customers/<int:customer_id>/deactivate",methods=["PUT"])
+def deactivate_customer(customer_id):
+    """
+    Deactivate a Customer
+    This endpoint will deactivate a Customer based the body that is posted
+    """
+    app.logger.info("Request to deactivate customer with id: %s", customer_id)
+    # check_content_type("application/json")
+
+    customer = Customer.find(customer_id)
+    if not customer:
+        abort(status.HTTP_404_NOT_FOUND,
+              f"Customer with id '{customer_id}' was not found.")
+    customer.deactivate()
+    app.logger.info("Customer with ID [%s]'s active status is set to [%s].", customer.id,customer.active)
+    return jsonify(customer.serialize()), status.HTTP_200_OK
+
+    
+
 ######################################################################
 # GET INDEX
 ######################################################################
