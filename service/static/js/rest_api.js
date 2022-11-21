@@ -6,17 +6,21 @@ $(function () {
 
     // Updates the form with data from the response
     function update_form_data(res) {
-        $("#pet_id").val(res.id);
-        $("#pet_name").val(res.name);
-        $("#pet_category").val(res.category);
-        if (res.available == true) {
-            $("#pet_available").val("true");
+        $("#id").val(res.id);
+        $("#name").val(res.addresses[0].name);
+        $("#street").val(res.addresses[0].street);
+        $("#city").val(res.addresses[0].city);
+        $("#state").val(res.addresses[0].state);
+        $("#postalcode").val(res.addresses[0].postalcode);
+        $("#first_name").val(res.first_name);
+        $("#last_name").val(res.last_name);
+        if (res.active == true) {
+            $("#active").val("true");
         } else {
-            $("#pet_available").val("false");
+            $("#active").val("false");
         }
-        $("#pet_gender").val(res.gender);
-        $("#pet_birthday").val(res.birthday);
     }
+  
 
     /// Clears all form fields
     function clear_form_data() {
@@ -34,7 +38,7 @@ $(function () {
     }
 
     // ****************************************
-    // Create a Pet
+    // Create a Customer
     // ****************************************
 
     $("#create-btn").click(function () {
@@ -124,18 +128,18 @@ $(function () {
     });
 
     // ****************************************
-    // Retrieve a Pet
+    // Retrieve a Customer
     // ****************************************
 
     $("#retrieve-btn").click(function () {
 
-        let pet_id = $("#pet_id").val();
+        let customer_id = $("#id").val();
 
         $("#flash_message").empty();
 
         let ajax = $.ajax({
             type: "GET",
-            url: `/pets/${pet_id}`,
+            url: `/customers/${customer_id}`,
             contentType: "application/json",
             data: ''
         })
