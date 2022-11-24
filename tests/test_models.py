@@ -17,7 +17,7 @@ DATABASE_URI = os.getenv(
 ######################################################################
 #  Customer   M O D E L   T E S T   C A S E S
 ######################################################################
-class TestCustomer(unittest.TestCase):
+class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
     """Test Cases for Customer Model"""
 
     @classmethod
