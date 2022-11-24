@@ -96,7 +96,7 @@ $(function () {
     $("#update-btn").click(function () {
 
         let name = $("#name").val();
-        let id = ("#id").val();
+        let id = $("#id").val();
         let street = $("#street").val();
         let city = $("#city").val();
         let state = $("#state").val();
@@ -206,7 +206,7 @@ $(function () {
     });
 
     // ****************************************
-    // Search for a Pet
+    // Search for a Customer
     // ****************************************
 
     $("#search-btn").click(function () {
@@ -217,7 +217,7 @@ $(function () {
         let queryString = ""
 
         if (active || inactive) {
-            queryString += 'active=' + $("#active").val()
+            queryString += '?active=' + $("#active").val()
         }
         
 
@@ -225,7 +225,7 @@ $(function () {
 
         let ajax = $.ajax({
             type: "GET",
-            url: `/pets?${queryString}`,
+            url: `/customers${queryString}`,
             contentType: "application/json",
             data: ''
         })
