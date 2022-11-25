@@ -7,11 +7,11 @@ $(function () {
     // Updates the form with data from the response
     function update_form_data(res) {
         $("#id").val(res.id);
-        $("#name").val(res.addresses[0].name);
-        $("#street").val(res.addresses[0].street);
-        $("#city").val(res.addresses[0].city);
-        $("#state").val(res.addresses[0].state);
-        $("#postalcode").val(res.addresses[0].postalcode);
+        $("#address_name").val(res.addresses[0].name);
+        $("#address_street").val(res.addresses[0].street);
+        $("#address_city").val(res.addresses[0].city);
+        $("#address_state").val(res.addresses[0].state);
+        $("#address_postalcode").val(res.addresses[0].postalcode);
         $("#first_name").val(res.first_name);
         $("#last_name").val(res.last_name);
         if (res.active == true) {
@@ -25,10 +25,11 @@ $(function () {
     /// Clears all form fields
     function clear_form_data() {
         $("#id").val("");
-        $("#name").val("");
-        $("#street").val("");
-        $("#city").val("");
-        $("#postalcode").val("");
+        $("#address_name").val("");
+        $("#address_street").val("");
+        $("#address_city").val("");
+        $("#address_state").val("");
+        $("#address_postalcode").val("");
         $("#first_name").val("");
         $("#last_name").val("");
         $("#active").val("");
@@ -46,11 +47,11 @@ $(function () {
 
     $("#create-btn").click(function () {
 
-        let name = $("#name").val();
-        let street = $("#street").val();
-        let city = $("#city").val();
-        let state = $("#state").val();
-        let postalcode = $("#postalcode").val();
+        let name = $("#address_name").val();
+        let street = $("#address_street").val();
+        let city = $("#address_city").val();
+        let state = $("#address_state").val();
+        let postalcode = $("#address_postalcode").val();
         let first_name = $("#first_name").val();
         let last_name = $("#last_name").val();
         let active = $("#active").val() == "true";
@@ -95,12 +96,12 @@ $(function () {
 
     $("#update-btn").click(function () {
 
-        let name = $("#name").val();
+        let name = $("#address_name").val();
         let id = $("#id").val();
-        let street = $("#street").val();
-        let city = $("#city").val();
-        let state = $("#state").val();
-        let postalcode = $("#postalcode").val();
+        let street = $("#address_street").val();
+        let city = $("#address_city").val();
+        let state = $("#address_state").val();
+        let postalcode = $("#address_postalcode").val();
         let first_name = $("#first_name").val();
         let last_name = $("#last_name").val();
         let active = $("#active").val() == "true";
@@ -243,14 +244,14 @@ $(function () {
             table += '<th class="col-md-2">Address Street</th>'
             table += '<th class="col-md-2">Address City</th>'
             table += '<th class="col-md-2">Address State</th>'
-            table += '<th class="col-md-2">Address Postal Code</th>'
+            table += '<th class="col-md-2">Address Postalcode</th>'
             table += '</tr></thead><tbody>'
             let firstCustomer = "";
             for(let i = 0; i < res.length; i++) {
                 let customer = res[i];
                 table +=  `<tr id="row_${i}"><td>${customer.id}</td><td>${customer.first_name}</td><td>${customer.last_name}</td><td>${customer.active}</td><td>${customer.addresses[0].name}</td><td>${customer.addresses[0].street}</td><td>${customer.addresses[0].city}</td><td>${customer.addresses[0].state}</td><td>${customer.addresses[0].postalcode}</td></tr>`;
                 if (i == 0) {
-                    firstCustomer = pet;
+                    firstCustomer = customer;
                 }
             }
             table += '</tbody></table>';
