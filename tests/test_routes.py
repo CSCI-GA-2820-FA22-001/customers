@@ -23,7 +23,7 @@ BASE_URL = "/customers"
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
-class TestYourCustomerServer(TestCase):
+class TestYourCustomerServer(TestCase):     # pylint: disable=R0904
     """ REST API Server Tests """
 
     @classmethod
@@ -176,7 +176,7 @@ class TestYourCustomerServer(TestCase):
         response = self.client.post(BASE_URL, json={"name": " "})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_unsupported_HTTP_request(self):
+    def test_unsupported_http_request(self):
         """It should not allow unsupported HTTP methods"""
         response = self.client.patch(BASE_URL)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
