@@ -127,10 +127,10 @@ def create_customers():
         app.logger.info("Getting data from FORM submit")
         json_address = {
             "name": request.form["name"],
-	        "street": request.form["street"],
-	        "city": request.form["city"],
-	        "state": request.form["state"],
-	        "postalcode" : request.form["postalcode"]
+            "street": request.form["street"],
+            "city": request.form["city"],
+            "state": request.form["state"],
+            "postalcode": request.form["postalcode"]
         }
         data = {
             "first_name": request.form["first_name"],

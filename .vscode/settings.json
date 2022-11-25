@@ -1,7 +1,7 @@
 {
     "makefile.extensionOutputFolder": "./.vscode",
     "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
+    "python.linting.pylintEnabled": false,
     "python.testing.nosetestsEnabled": true,
     "python.testing.nosetestArgs": ["-c=setup.cfg"],
     "python.testing.pytestEnabled": false,
@@ -27,6 +27,7 @@
         "**/.DS_Store": true,
         "**/*.pyc": true,
         "**/__pycache__": true
-    }
+    },
+    "python.linting.flake8Enabled": true
 }
 
