@@ -81,12 +81,8 @@ def deactivate_customer(customer_id):
 
 @app.route("/")
 def index():
-    """ Root URL response """
-    app.logger.info("Request for Root URL")
-    return (
-        jsonify(name="Customer Demo REST API Service", version="1.0",
-                # paths=url_for("list_customers", _external=True),
-                ), status.HTTP_200_OK,)
+    """Base URL for our service"""
+    return app.send_static_file("index.html")
 
 
 ######################################################################
@@ -126,9 +122,29 @@ def create_customers():
     This endpoint will create a Customer based the data in the body that is posted
     """
     app.logger.info("Request to create a customer")
-    check_content_type("application/json")
+    data = {}
+    if request.headers.get("Content-Type") == "application/x-www-form-urlencoded":
+        app.logger.info("Getting data from FORM submit")
+        json_address = {
+            "name": request.form["name"],
+            "street": request.form["street"],
+            "city": request.form["city"],
+            "state": request.form["state"],
+            "postalcode": request.form["postalcode"]
+        }
+        data = {
+            "first_name": request.form["first_name"],
+            "last_name": request.form["last_name"],
+            "active": request.form["active"] in ['True', 'true', '1', 'y', 'yes'],
+            "addresses": []
+        }
+        data.addresses.append(json_address)
+    else:
+        check_content_type("application/json")
+        app.logger.info("Getting json data from API call")
+        data = request.get_json()
     customer = Customer()
-    customer.deserialize(request.get_json())
+    customer.deserialize(data)
     customer.create()
     message = customer.serialize()
     location_url = url_for(

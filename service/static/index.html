@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Customer RESTful Service</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/css/cerulean_bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header">
+          <h1>Customer REST API Service</h1>
+      </div>
+
+      <!-- Flash Message -->
+      <div class="table-responsive">
+        <table class="table">
+          <tr><td>Status:</td><td><span id="flash_message"></span></td></tr>
+        </table>
+      </div>
+
+      <!-- FORM -->
+      <div class="col-md-12" id="form_data">
+        <h3>Create, Retrieve, Update, and Delete a Customer:</h3>
+        <div class="well">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="id">ID:</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="id" placeholder="Enter ID of Customer">
+              </div>
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-primary" id="retrieve-btn">Retrieve</button>
+                <button type="submit" class="btn btn-danger" id="delete-btn">Delete</button>
+              </div>
+            </div>
+          </div> <!-- form horizontal -->
+
+          <div class="form-horizontal">
+
+            <!--FIRST NAME -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="first_name">First Name:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="first_name" placeholder="Enter first name for Customer">
+              </div>
+            </div>
+
+            <!-- LAST NAME -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="last_name">Last Name:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="last_name" placeholder="Enter last name for Customer">
+              </div>
+            </div>
+
+            <!-- ACTIVE -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="active">Active:</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="active">
+                  <option value="" selected>Blank</option>
+                  <option value="true" selected>True</option>
+                  <option value="false">False</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- ADDRESS NAME -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="address_name">Address Name:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="address_name" placeholder="Enter name for Address">
+              </div>
+            </div>
+
+            <!-- ADDRESS STREET -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="address_street">Address Street:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="address_street" placeholder="Enter street for Address">
+              </div>
+            </div>
+
+            <!-- ADDRESS CITY -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="address_city">Address City:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="address_city" placeholder="Enter city for Address">
+              </div>
+            </div>
+
+            <!-- ADDRESS STATE -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="address_state">Address State:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="address_state" placeholder="Enter state for Address">
+              </div>
+            </div>
+
+            <!-- ADDRESS POSTAL CODE -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="address_postcode">Address Postalcode:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="address_postalcode" placeholder="Enter postalcode for Address">
+              </div>
+            </div>
+
+           
+
+
+            <!-- SUBMIT BUTTONS -->
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary" id="search-btn">Search</button>
+                <button type="submit" class="btn btn-primary" id="clear-btn">Clear</button>
+                <button type="submit" class="btn btn-success" id="create-btn">Create</button>
+                <button type="submit" class="btn btn-warning" id="update-btn">Update</button>
+              </div>
+            </div>
+          </div> <!-- form horizontal -->
+        </div> <!-- end well -->
+      </div> <!-- end Form -->
+
+      <!-- Search Results -->
+      <div class="table-responsive col-md-12" id="search_results">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th class="col-md-1">ID</th>
+            <th class="col-md-4">First Name</th>
+            <th class="col-md-4">Last Name</th>
+            <th class="col-md-3">Active</th>
+            <th class="col-md-4">Address Name</th>
+            <th class="col-md-4">Address Street</th>
+            <th class="col-md-4">Address City</th>
+            <th class="col-md-4">Address State</th>
+            <th class="col-md-4">Address Postal Code</th>
+          </tr>
+          </thead>
+        </table>
+      </div>
+
+      <footer>
+        <br><br>
+        <p>&copy; NYU DevOps Company 2022</p>
+      </footer>
+
+    </div> <!-- container -->
+
+  <script type="text/javascript" src = "static/js/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src = "static/js/bootstrap.min.js"></script>
+
+  <!-- YOUR REST API -->
+  <script type="text/javascript" src="static/js/rest_api.js"></script>
+
+  </body>
+</html>
