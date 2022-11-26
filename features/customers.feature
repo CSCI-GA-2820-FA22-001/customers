@@ -14,7 +14,7 @@ Scenario: The server is running
     Then I should see "Customer RESTful Service" in the title
     And I should not see "404 Not Found"
 
-Scenario: Create a Pet
+Scenario: Create a Customer
     When I visit the "Home Page"
     And I set the "First Name" to "Joe"
     And I set the "Last Name" to "DiMaggio"
