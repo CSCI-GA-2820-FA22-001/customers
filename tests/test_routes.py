@@ -23,7 +23,8 @@ BASE_URL = "/customers"
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
-class TestYourCustomerServer(TestCase):     # pylint: disable=R0904
+# pylint: disable=R0904
+class TestYourCustomerServer(TestCase):
     """ REST API Server Tests """
 
     @classmethod
@@ -85,6 +86,9 @@ class TestYourCustomerServer(TestCase):     # pylint: disable=R0904
         data = response.get_json()
         self.assertEqual(data["status"], "OK")
 
+    # ----------------------------------------------------------
+    # TEST CREATE
+    # ----------------------------------------------------------
     def test_create_customer(self):
         """It should Create a new Customer"""
         test_customer = CustomerFactory()
@@ -112,6 +116,9 @@ class TestYourCustomerServer(TestCase):     # pylint: disable=R0904
         self.assertEqual(new_customer["active"], test_customer.active)
         # self.assertEqual(new_customer["addresses"], test_customer.addresses.id)
 
+    # ----------------------------------------------------------
+    # TEST READ
+    # ----------------------------------------------------------
     def test_get_customer(self):
         """It should Get a single Customer"""
         # get the id of a customer
@@ -123,6 +130,17 @@ class TestYourCustomerServer(TestCase):     # pylint: disable=R0904
         self.assertEqual(data["last_name"], test_customer.l_name)
         self.assertEqual(data["active"], test_customer.active)
 
+    def test_get_customer_not_found(self):
+        """It should not Get a Customer thats not found"""
+        resp = self.client.get(f"{BASE_URL}/0")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+        data = resp.get_json()
+        logging.debug("Response data = %s", data)
+        self.assertIn("was not found", data["message"])
+
+    # ----------------------------------------------------------
+    # TEST DELETE
+    # ----------------------------------------------------------
     def test_delete_customer(self):
         """It should Delete a customer"""
         test_customer = self._create_customers(1)[0]
@@ -133,14 +151,9 @@ class TestYourCustomerServer(TestCase):     # pylint: disable=R0904
         response = self.client.get(f"{BASE_URL}/{test_customer.id}")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_get_customer_not_found(self):
-        """It should not Get a Customer thats not found"""
-        resp = self.client.get(f"{BASE_URL}/0")
-        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
-        data = resp.get_json()
-        logging.debug("Response data = %s", data)
-        self.assertIn("was not found", data["message"])
-
+    # ----------------------------------------------------------
+    # TEST LIST
+    # ----------------------------------------------------------
     def test_list_all_customer(self):
         """It should list all Customers"""
         self._create_customers(5)
@@ -152,6 +165,9 @@ class TestYourCustomerServer(TestCase):     # pylint: disable=R0904
         self.assertEqual(len(data), 5)
         logging.debug("Response data = %s", data)
 
+    # ----------------------------------------------------------
+    # TEST UPDATE
+    # ----------------------------------------------------------
     def test_update_customer(self):
         """It should Update an existing Customer"""
         # create a Customer to update
