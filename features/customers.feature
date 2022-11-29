@@ -162,6 +162,7 @@ Scenario: List all Customers
     And I set the "Address Postalcode" to "54321"
     And I press the "Create" button
     Then I should see the message "Success"
+    When I copy the "ID" field
     And I press the "Clear" button
     Then the "ID" field should be empty
     And the "First Name" field should be empty
