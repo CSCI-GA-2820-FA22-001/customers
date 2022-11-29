@@ -167,7 +167,8 @@ Scenario: List all Customers
     Then the "ID" field should be empty
     And the "First Name" field should be empty
     And the "Address Name" field should be empty
-    When I press the "Search" button
+    When I select "Blank" in the "Active" dropdown
+    And I press the "Search" button
     Then I should see the message "Success"
     And I should see "Jonathan" in the "First Name" field
     And I should see "Little" in the "Last Name" field
