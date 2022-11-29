@@ -181,10 +181,14 @@ class Customer(db.Model, PersistentBase):
             self.active = data["active"]
             # handle inner list of addresses
             address_list = data.get("addresses")
-            for json_address in address_list:
-                address = Address()
-                address.deserialize(json_address)
-                self.addresses.append(address)
+            if len(self.addresses) > 0:
+                address = self.addresses[0]
+                address.deserialize(address_list[0])
+            else:
+                for json_address in address_list:
+                    address = Address()
+                    address.deserialize(json_address)
+                    self.addresses.append(address)
         except KeyError as error:
             raise DataValidationError(
                 "Invalid Customer: missing " + error.args[0]) from error
