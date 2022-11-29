@@ -150,3 +150,43 @@ Scenario: Read a Customer
     And I should see "AK" in the "Address State" field
     And I should see "54321" in the "Address Postalcode" field
     
+Scenario: List all Customers
+    When I visit the "Home Page"
+    And I set the "First Name" to "Jonathan"
+    And I set the "Last Name" to "Little"
+    And I select "True" in the "Active" dropdown
+    And I set the "Address Name" to "Home"
+    And I set the "Address Street" to "123 Happy Rd"
+    And I set the "Address City" to "Happytown"
+    And I set the "Address State" to "AK"
+    And I set the "Address Postalcode" to "54321"
+    And I press the "Create" button
+    Then I should see the message "Success"
+    And I set the "First Name" to "Mariano"
+    And I set the "Last Name" to "Diaz"
+    And I select "True" in the "Active" dropdown
+    And I set the "Address Name" to "Home"
+    And I set the "Address Street" to "123 Happy Rd"
+    And I set the "Address City" to "Happytown"
+    And I set the "Address State" to "AK"
+    And I set the "Address Postalcode" to "54321"
+    And I press the "Create" button
+    Then I should see the message "Success"
+    When I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "Jonathan" in the first row of "First Name" field
+    And I should see "Little" in the first row of "Last Name" field
+    And I should see "True" in the first row of "Active" dropdown
+    And I should see "Home" in the first row of "Address Name" field
+    And I should see "123 Happy Rd" in the first row of "Address Street" field
+    And I should see "Happytown" in the first row of "Address City" field
+    And I should see "AK" in the first row of "Address State" field
+    And I should see "54321" in the first row of "Address Postalcode" field
+    And I should see "Mariano" in the second row of "First Name" field
+    And I should see "Diaz" in the second row of "Last Name" field
+    And I should see "True" in the second row of "Active" dropdown
+    And I should see "Home" in the second row of "Address Name" field
+    And I should see "123 Happy Rd" in the second row of "Address Street" field
+    And I should see "Happytown" in the second row of "Address City" field
+    And I should see "AK" in the second row of "Address State" field
+    And I should see "54321" in the second row of "Address Postalcode" field
