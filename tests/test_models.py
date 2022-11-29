@@ -177,6 +177,16 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         self.assertEqual(new_customer.l_name, customer.l_name)
         self.assertEqual(new_customer.active, customer.active)
 
+    def test_deserialize_a_customer_with_new_address_info(self):
+        """It should Deserialize a customer with new address"""
+        customer = CustomerFactory()
+        customer.addresses.append(AddressFactory())
+        customer.create()
+        serial_customer = customer.serialize()
+        serial_customer["addresses"][0]["street"] = "New Changed St"
+        customer.deserialize(serial_customer)
+        self.assertEqual(customer.addresses[0].street, "New Changed St")
+
     def test_deserialize_with_key_error(self):
         """It should not Deserialize a customer with a KeyError"""
         customer = Customer()
