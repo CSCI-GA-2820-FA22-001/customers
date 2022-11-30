@@ -120,3 +120,13 @@ Scenario: Change Active Status
     And I should see "Silvanus" in the "First Name" field
     And I should see "Ireland" in the "Last Name" field
     And I should see "False" in the "Active" dropdown
+
+Scenario: Search for Active
+    When I visit the "Home Page"
+    And I select "True" in the "Active" dropdown
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "Bob" in the results
+    And I should see "Smith" in the results
+    And I should not see "Ireland" in the results
+
