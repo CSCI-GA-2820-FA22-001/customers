@@ -167,3 +167,26 @@ Scenario: List all Customers
     Then I should see the message "Success"
     And I should see "Bob" in the results
     And I should see "John" in the results
+
+Scenario: Update a Customer
+    When I visit the "Home Page"
+    And I set the "First Name" to "Bob"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "Bob" in the "First Name" field
+    When I change "First Name" to "Salman"
+    And I press the "Update" button
+    Then I should see the message "Success"
+    When I copy the "Id" field
+    And I press the "Clear" button
+    And I paste the "Id" field
+    And I press the "Retrieve" button
+    Then I should see the message "Success"
+    And I should see "Salman" in the "First Name" field
+    When I press the "Clear" button
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "Salman" in the results
+    And I should not see "Bob" in the results
+    
+
