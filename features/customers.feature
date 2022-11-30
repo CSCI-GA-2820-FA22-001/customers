@@ -7,6 +7,7 @@ Background:
     Given the following customers
         | name       | street           | city           | state   | postalcode | first_name | last_name | active |
         | Home       | 123 fake rd      | Happytown      | CA      | 12345      |   Bob      | Smith     | True   |
+        | Home       | 231 happy rd     | Happytown      | NY      | 54321      |   John     | Doe       | True   |
 
 
 Scenario: The server is running
@@ -150,3 +151,9 @@ Scenario: Read a Customer
     And I should see "AK" in the "Address State" field
     And I should see "54321" in the "Address Postalcode" field
     
+Scenario: List all Customers
+    When I visit the "Home Page"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "Bob" in the results
+    And I should see "John" in the results
