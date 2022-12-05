@@ -6,6 +6,7 @@ and SQL database
 """
 import sys
 from flask import Flask
+from flask_restx import Api
 from service import config
 from .common import log_handlers
 
@@ -13,12 +14,23 @@ from .common import log_handlers
 app = Flask(__name__)
 app.config.from_object(config)
 
+
+######################################################################
+# Configure Swagger before initializing it
+######################################################################
+api = Api(app,
+          version='1.0.0',
+          title='Customer Demo REST API Service',
+          description='This is a sample server customer store server.',
+          default='customers',
+          default_label='Customer shop operations',
+          )
+
 # Dependencies require we import the routes AFTER the Flask app is created
 # pylint: disable=wrong-import-position, wrong-import-order
 from service import models, routes        # noqa: E402, E261
 # pylint: disable=wrong-import-position
 from .common import error_handlers, cli_commands  # noqa: F401 E402
-
 # Set up logging for production
 log_handlers.init_logging(app, "gunicorn.error")
 

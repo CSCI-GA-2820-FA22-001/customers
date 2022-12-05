@@ -28,6 +28,9 @@
         "**/*.pyc": true,
         "**/__pycache__": true
     },
-    "python.linting.flake8Enabled": true
+    "python.linting.flake8Enabled": true,
+    "cSpell.words": [
+        "restx"
+    ]
 }
 
