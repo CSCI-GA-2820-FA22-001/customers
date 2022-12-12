@@ -157,8 +157,6 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
     def test_serialize_a_customer(self):
         """It should Serialize a Customer"""
         customer = CustomerFactory()
-        address = AddressFactory()
-        customer.addresses.append(address)
         serial_customer = customer.serialize()
         self.assertEqual(serial_customer["id"], customer.id)
         self.assertEqual(serial_customer["first_name"], customer.f_name)
@@ -202,15 +200,9 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         customer = Customer()
         self.assertRaises(DataValidationError, customer.deserialize, [])
 
-    def test_deserialize_address_key_error(self):
-        """It should not Deserialize an address with a KeyError"""
-        address = Address()
-        self.assertRaises(DataValidationError, address.deserialize, {})
 
-    def test_deserialize_address_type_error(self):
-        """It should not Deserialize an address with a TypeError"""
-        address = Address()
-        self.assertRaises(DataValidationError, address.deserialize, [])
+
+
 
 
     def test_update_customer_address(self):
