@@ -29,6 +29,8 @@ def health():
 ######################################################################
 # Configure the Root route before OpenAPI
 ######################################################################
+
+# Create website page
 @app.route('/')
 def index():
     """ Index page """
@@ -77,7 +79,7 @@ class CustomerResource(Resource):
     @api.response(404, 'Customer not found')
     @api.marshal_with(customer_model)
     #@app.route("/customers/<int:customer_id>", methods=["GET"])
-    def get_customers(customer_id):
+    def get(self, customer_id):
         """
         Retrieve a single Customer
 
@@ -102,14 +104,14 @@ class CustomerResource(Resource):
     @api.expect(customer_model)
     @api.marshal_with(customer_model)
     #@app.route("/customers/<int:customer_id>", methods=["PUT"])
-    def update_customers(customer_id):
+    def put(self, customer_id):
         """
         Update a Customer
 
         This endpoint will update a Customer based the body that is posted
         """
         app.logger.info("Request to update customer with id: %s", customer_id)
-        check_content_type("application/json")
+        #check_content_type("application/json")
 
         customer = Customer.find(customer_id)
         if not customer:
@@ -130,7 +132,7 @@ class CustomerResource(Resource):
     @api.doc('delete_customers')
     @api.response(204,'Customer deleted')
     #@app.route("/customers/<int:customer_id>", methods=["DELETE"])
-    def delete_customers(customer_id):
+    def delete(self, customer_id):
         """
         Delete a customer
 
@@ -152,13 +154,14 @@ class CustomerResource(Resource):
 @api.route('/customers', strict_slashes=False)
 class CustomerCollection(Resource):
     ######################################################################
-    # LIST ALL CUSTOMERS
+    # LIST ALL CUSTOMERS (Needs to be adjusted for RestX)
     ######################################################################
     @api.doc('list_customers')
     @api.expect(customer_args, validate=True)
     @api.marshal_list_with(customer_model)
     #@app.route("/customers", methods=["GET"])
-    def list_customers():
+   
+    def get(self):
         """
         List all Customers
         This endpoint will list all Customers currently listed in the database
@@ -184,12 +187,12 @@ class CustomerCollection(Resource):
     ######################################################################
     # ADD A NEW CUSTOMER
     ######################################################################
-    @app.route("/customers", methods=["POST"])
+    #@app.route("/customers", methods=["POST"])
     @api.doc('create_customers')
     @api.response(400, 'The posted data was not valid')
     @api.expect(create_model)
     @api.marshal_with(customer_model, code=201)
-    def create_customers():
+    def post(self):
         """
         Creates a Customer
         This endpoint will create a Customer based the data in the body that is posted
@@ -254,7 +257,6 @@ def deactivate_customer(customer_id):
     app.logger.info("Customer with ID [%s]'s active status is set to [%s].",
                     customer.id, customer.active)
     return jsonify(customer.serialize()), status.HTTP_200_OK
-
 
 ######################################################################
 # GET INDEX
