@@ -157,6 +157,7 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
     def test_serialize_a_customer(self):
         """It should Serialize a Customer"""
         customer = CustomerFactory()
+        address = customer.addresses[0]
         serial_customer = customer.serialize()
         self.assertEqual(serial_customer["id"], customer.id)
         self.assertEqual(serial_customer["first_name"], customer.f_name)
