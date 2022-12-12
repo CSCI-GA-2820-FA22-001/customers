@@ -148,11 +148,13 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         customer.create()
 
         # Fetch it back by name
-        same_customer = Customer.find_by_name(customer.f_name, customer.l_name)[0]
-        self.assertEqual(same_customer.id, customer.id)
-        self.assertEqual(same_customer.f_name, customer.f_name)
-        self.assertEqual(same_customer.l_name, customer.l_name)
-        self.assertEqual(same_customer.active, customer.active)
+        same = Customer.find_by_name(
+            customer.f_name, customer.l_name
+            )[0]
+        self.assertEqual(same.id, customer.id)
+        self.assertEqual(same.f_name, customer.f_name)
+        self.assertEqual(same.l_name, customer.l_name)
+        self.assertEqual(same.active, customer.active)
 
     def test_serialize_a_customer(self):
         """It should Serialize a Customer"""
@@ -201,11 +203,6 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         customer = Customer()
         self.assertRaises(DataValidationError, customer.deserialize, [])
 
-
-
-
-
-
     def test_update_customer_address(self):
         """It should Update a customers address"""
         customers = Customer.all()
@@ -230,8 +227,6 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         customer = Customer.find(customer.id)
         address = customer.addresses[0]
         self.assertEqual(address.city, "XX")
-
-
 
     def test_deactivate_customer(self):
         """It should deactivate a customer"""
@@ -281,8 +276,11 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         for customer in customers:
             customer.create()
         active = customers[0].active
-        count = len([customer for customer in customers if customer.active == active])
+        count = len(
+            [customer for customer in customers if customer.active == active]
+            )
         found = Customer.find_by_activity(active)
         self.assertEqual(found.count(), count)
         for customer in found:
-            self.assertEqual(customer.active, active)
+            active_flag = customer.active
+            self.assertEqual(customer.active, active_flag)
