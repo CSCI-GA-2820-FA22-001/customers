@@ -6,8 +6,8 @@ import os
 import unittest
 
 from service import app
-from service.models import Customer, Address, DataValidationError, PersistentBase, db
-from tests.factories import CustomerFactory, AddressFactory
+from service.models import Customer, DataValidationError, PersistentBase, db
+from tests.factories import CustomerFactory
 
 DATABASE_URI = os.getenv(
     "DATABASE_URI", "postgresql://postgres:postgres@localhost:5432/postgres"
@@ -60,6 +60,11 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
             f_name=fake_customer.f_name,
             l_name=fake_customer.l_name,
             active=fake_customer.active,
+            name=fake_customer.name,
+            street=fake_customer.street,
+            city=fake_customer.city,
+            state=fake_customer.state,
+            postalcode=fake_customer.postalcode
         )
         self.assertIsNotNone(customer)
         self.assertEqual(customer.id, None)
@@ -89,7 +94,11 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         self.assertEqual(found_customer.f_name, customer.f_name)
         self.assertEqual(found_customer.l_name, customer.l_name)
         self.assertEqual(found_customer.active, customer.active)
-        self.assertEqual(found_customer.addresses, [])
+        self.assertEqual(found_customer.name, customer.name)
+        self.assertEqual(found_customer.street, customer.street)
+        self.assertEqual(found_customer.city, customer.city)
+        self.assertEqual(found_customer.state, customer.state)
+        self.assertEqual(found_customer.postalcode, customer.postalcode)
 
     def test_update_customer(self):
         """It should Update a customer"""
@@ -139,17 +148,17 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         customer.create()
 
         # Fetch it back by name
-        same_customer = Customer.find_by_name(customer.f_name, customer.l_name)[0]
-        self.assertEqual(same_customer.id, customer.id)
-        self.assertEqual(same_customer.f_name, customer.f_name)
-        self.assertEqual(same_customer.l_name, customer.l_name)
-        self.assertEqual(same_customer.active, customer.active)
+        same = Customer.find_by_name(
+            customer.f_name, customer.l_name
+            )[0]
+        self.assertEqual(same.id, customer.id)
+        self.assertEqual(same.f_name, customer.f_name)
+        self.assertEqual(same.l_name, customer.l_name)
+        self.assertEqual(same.active, customer.active)
 
     def test_serialize_a_customer(self):
         """It should Serialize a Customer"""
         customer = CustomerFactory()
-        address = AddressFactory()
-        customer.addresses.append(address)
         serial_customer = customer.serialize()
         self.assertEqual(serial_customer["id"], customer.id)
         self.assertEqual(serial_customer["first_name"], customer.f_name)
@@ -157,18 +166,15 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         self.assertEqual(serial_customer["active"], customer.active)
         self.assertEqual(len(serial_customer["addresses"]), 1)
         addresses = serial_customer["addresses"]
-        self.assertEqual(addresses[0]["id"], address.id)
-        self.assertEqual(addresses[0]["customer_id"], address.customer_id)
-        self.assertEqual(addresses[0]["name"], address.name)
-        self.assertEqual(addresses[0]["street"], address.street)
-        self.assertEqual(addresses[0]["city"], address.city)
-        self.assertEqual(addresses[0]["state"], address.state)
-        self.assertEqual(addresses[0]["postalcode"], address.postalcode)
+        self.assertEqual(addresses[0]["name"], customer.name)
+        self.assertEqual(addresses[0]["street"], customer.street)
+        self.assertEqual(addresses[0]["city"], customer.city)
+        self.assertEqual(addresses[0]["state"], customer.state)
+        self.assertEqual(addresses[0]["postalcode"], customer.postalcode)
 
     def test_deserialize_a_customer(self):
         """It should Deserialize a customer"""
         customer = CustomerFactory()
-        customer.addresses.append(AddressFactory())
         customer.create()
         serial_customer = customer.serialize()
         new_customer = Customer()
@@ -180,12 +186,11 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
     def test_deserialize_a_customer_with_new_address_info(self):
         """It should Deserialize a customer with new address"""
         customer = CustomerFactory()
-        customer.addresses.append(AddressFactory())
         customer.create()
         serial_customer = customer.serialize()
         serial_customer["addresses"][0]["street"] = "New Changed St"
         customer.deserialize(serial_customer)
-        self.assertEqual(customer.addresses[0].street, "New Changed St")
+        self.assertEqual(customer.street, "New Changed St")
 
     def test_deserialize_with_key_error(self):
         """It should not Deserialize a customer with a KeyError"""
@@ -197,47 +202,12 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         customer = Customer()
         self.assertRaises(DataValidationError, customer.deserialize, [])
 
-    def test_deserialize_address_key_error(self):
-        """It should not Deserialize an address with a KeyError"""
-        address = Address()
-        self.assertRaises(DataValidationError, address.deserialize, {})
-
-    def test_deserialize_address_type_error(self):
-        """It should not Deserialize an address with a TypeError"""
-        address = Address()
-        self.assertRaises(DataValidationError, address.deserialize, [])
-
-    def test_add_customer_address(self):
-        """It should Create a customer with an address and add it to the database"""
-        customers = Customer.all()
-        self.assertEqual(customers, [])
-        customer = CustomerFactory()
-        address = AddressFactory(customer=customer)
-        customer.addresses.append(address)
-        customer.create()
-        # Assert that it was assigned an id and shows up in the database
-        self.assertIsNotNone(customer.id)
-        customers = Customer.all()
-        self.assertEqual(len(customers), 1)
-
-        new_customer = Customer.find(customer.id)
-        self.assertEqual(new_customer.addresses[0].name, address.name)
-
-        address2 = AddressFactory(customer=customer)
-        customer.addresses.append(address2)
-        customer.update()
-
-        new_customer = Customer.find(customer.id)
-        self.assertEqual(len(new_customer.addresses), 2)
-        self.assertEqual(new_customer.addresses[1].name, address2.name)
-
     def test_update_customer_address(self):
         """It should Update a customers address"""
         customers = Customer.all()
         self.assertEqual(customers, [])
 
         customer = CustomerFactory()
-        address = AddressFactory(customer=customer)
         customer.create()
         # Assert that it was assigned an id and shows up in the database
         self.assertIsNotNone(customer.id)
@@ -246,40 +216,15 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
 
         # Fetch it back
         customer = Customer.find(customer.id)
-        old_address = customer.addresses[0]
-        print("%r", old_address)
-        self.assertEqual(old_address.city, address.city)
+        old_city = customer.city
+        print("%r", old_city)
         # Change the city
-        old_address.city = "XX"
+        customer.city = "XX"
         customer.update()
 
         # Fetch it back again
         customer = Customer.find(customer.id)
-        address = customer.addresses[0]
-        self.assertEqual(address.city, "XX")
-
-    def test_delete_customer_address(self):
-        """It should Delete a customer address"""
-        customers = Customer.all()
-        self.assertEqual(customers, [])
-
-        customer = CustomerFactory()
-        address = AddressFactory(customer=customer)
-        customer.create()
-        # Assert that it was assigned an id and shows up in the database
-        self.assertIsNotNone(customer.id)
-        customers = Customer.all()
-        self.assertEqual(len(customers), 1)
-
-        # Fetch it back
-        customer = Customer.find(customer.id)
-        address = customer.addresses[0]
-        address.delete()
-        customer.update()
-
-        # Fetch it back again
-        customer = Customer.find(customer.id)
-        self.assertEqual(len(customer.addresses), 0)
+        self.assertEqual(customer.city, "XX")
 
     def test_deactivate_customer(self):
         """It should deactivate a customer"""
@@ -329,8 +274,11 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         for customer in customers:
             customer.create()
         active = customers[0].active
-        count = len([customer for customer in customers if customer.active == active])
+        count = len(
+            [customer for customer in customers if customer.active == active]
+            )
         found = Customer.find_by_activity(active)
         self.assertEqual(found.count(), count)
         for customer in found:
-            self.assertEqual(customer.active, active)
+            active_flag = customer.active
+            self.assertEqual(customer.active, active_flag)

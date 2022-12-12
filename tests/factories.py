@@ -18,7 +18,7 @@ Test Factory to make fake objects for testing
 
 import factory
 from factory.fuzzy import FuzzyChoice
-from service.models import Customer, Address
+from service.models import Customer
 
 
 class CustomerFactory(factory.Factory):
@@ -33,33 +33,8 @@ class CustomerFactory(factory.Factory):
     f_name = factory.Faker("name")
     l_name = factory.Faker("name")
     active = True
-
-    # the many side of relationships can be a little wonky in factory boy:
-    # https://factoryboy.readthedocs.io/en/latest/recipes.html#simple-many-to-many-relationship
-
-    @factory.post_generation
-    def addresses(self, create, extracted, **kwargs):  # pylint: disable=method-hidden, unused-argument
-        """Creates the addresses list"""
-        if not create:
-            return
-
-        if extracted:
-            self.addresses = extracted
-
-
-class AddressFactory(factory.Factory):
-    """Creates fake Addresses"""
-
-    # pylint: disable=too-few-public-methods
-    class Meta:
-        """Persistent class"""
-        model = Address
-
-    id = factory.Sequence(lambda n: n)
-    customer_id = None
     name = FuzzyChoice(choices=["home", "work", "other"])
     street = factory.Faker("street_address")
     city = factory.Faker("city")
     state = factory.Faker("state_abbr")
     postalcode = factory.Faker("postalcode")
-    customer = factory.SubFactory(CustomerFactory)

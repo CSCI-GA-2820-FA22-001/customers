@@ -58,7 +58,7 @@ jobs:
           flake8 . --count --max-complexity=10 --max-line-length=127 --statistics
           # Run pylint on the service
           pylint service
-
+      
       - name: Run unit tests with nose
         run: |
           export FLASK_APP=service:app

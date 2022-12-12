@@ -76,68 +76,9 @@ class PersistentBase:
 
 
 ######################################################################
-#  A D D R E S S   M O D E L
-######################################################################
-class Address(db.Model, PersistentBase):
-    """
-    Class that represents an Address
-    """
-
-    # Table Schema
-    id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.Integer, db.ForeignKey(
-        "customer.id", ondelete="CASCADE"), nullable=False)
-    name = db.Column(db.String(64))  # e.g. primary, summer home, etc
-    street = db.Column(db.String(64))
-    city = db.Column(db.String(64))
-    state = db.Column(db.String(2))
-    postalcode = db.Column(db.String(16))
-
-    def __repr__(self):
-        return f"<Address {self.name} id=[{self.id}] customer[{self.customer_id}]>"
-
-    def __str__(self):
-        return f"{self.name}: {self.street}, {self.city}, {self.state} {self.postalcode}"
-
-    def serialize(self):
-        """Serializes a Address into a dictionary"""
-        return {
-            "id": self.id,
-            "customer_id": self.customer_id,
-            "name": self.name,
-            "street": self.street,
-            "city": self.city,
-            "state": self.state,
-            "postalcode": self.postalcode
-        }
-
-    def deserialize(self, data):
-        """
-        Deserializes a Address from a dictionary
-        Args:
-            data (dict): A dictionary containing the resource data
-        """
-        try:
-            # self.customer_id = data["customer_id"]
-            self.name = data["name"]
-            self.street = data["street"]
-            self.city = data["city"]
-            self.state = data["state"]
-            self.postalcode = data["postalcode"]
-        except KeyError as error:
-            raise DataValidationError(
-                "Invalid Address: missing " + error.args[0]) from error
-        except TypeError as error:
-            raise DataValidationError(
-                "Invalid Address: body of request contained "
-                "bad or no data " + error.args[0]
-            ) from error
-        return self
-
-
-######################################################################
 #  C U S T O M E R   M O D E L
 ######################################################################
+# pylint: disable=R0902
 class Customer(db.Model, PersistentBase):
     """
     Class that represents a Customer
@@ -150,8 +91,11 @@ class Customer(db.Model, PersistentBase):
     f_name = db.Column(db.String(64))
     l_name = db.Column(db.String(64))
     active = db.Column(db.Boolean, default=True)
-    addresses = db.relationship(
-        "Address", backref="customer", passive_deletes=True)
+    name = db.Column(db.String(64))
+    street = db.Column(db.String(64))
+    city = db.Column(db.String(64))
+    state = db.Column(db.String(2))
+    postalcode = db.Column(db.String(16))
 
     def __repr__(self):
         return f"<Customer {self.f_name} {self.l_name} id=[{self.id}]>"
@@ -165,8 +109,14 @@ class Customer(db.Model, PersistentBase):
             "active": self.active,
             "addresses": [],
         }
-        for address in self.addresses:
-            customer["addresses"].append(address.serialize())
+        address_object = {
+            "name": self.name,
+            "street": self.street,
+            "city": self.city,
+            "state": self.state,
+            "postalcode": self.postalcode
+        }
+        customer["addresses"].append(address_object)
         return customer
 
     def deserialize(self, data):
@@ -181,14 +131,12 @@ class Customer(db.Model, PersistentBase):
             self.active = data["active"]
             # handle inner list of addresses
             address_list = data.get("addresses")
-            if len(self.addresses) > 0:
-                address = self.addresses[0]
-                address.deserialize(address_list[0])
-            else:
-                for json_address in address_list:
-                    address = Address()
-                    address.deserialize(json_address)
-                    self.addresses.append(address)
+            the_address = address_list[0]
+            self.name = the_address["name"]
+            self.street = the_address["street"]
+            self.city = the_address["city"]
+            self.state = the_address["state"]
+            self.postalcode = the_address["postalcode"]
         except KeyError as error:
             raise DataValidationError(
                 "Invalid Customer: missing " + error.args[0]) from error
