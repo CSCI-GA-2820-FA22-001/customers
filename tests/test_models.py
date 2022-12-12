@@ -159,7 +159,6 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
     def test_serialize_a_customer(self):
         """It should Serialize a Customer"""
         customer = CustomerFactory()
-        address = customer.addresses[0]
         serial_customer = customer.serialize()
         self.assertEqual(serial_customer["id"], customer.id)
         self.assertEqual(serial_customer["first_name"], customer.f_name)
@@ -167,11 +166,11 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         self.assertEqual(serial_customer["active"], customer.active)
         self.assertEqual(len(serial_customer["addresses"]), 1)
         addresses = serial_customer["addresses"]
-        self.assertEqual(addresses[0]["name"], address.name)
-        self.assertEqual(addresses[0]["street"], address.street)
-        self.assertEqual(addresses[0]["city"], address.city)
-        self.assertEqual(addresses[0]["state"], address.state)
-        self.assertEqual(addresses[0]["postalcode"], address.postalcode)
+        self.assertEqual(addresses[0]["name"], customer.name)
+        self.assertEqual(addresses[0]["street"], customer.street)
+        self.assertEqual(addresses[0]["city"], customer.city)
+        self.assertEqual(addresses[0]["state"], customer.state)
+        self.assertEqual(addresses[0]["postalcode"], customer.postalcode)
 
     def test_deserialize_a_customer(self):
         """It should Deserialize a customer"""
@@ -191,7 +190,7 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
         serial_customer = customer.serialize()
         serial_customer["addresses"][0]["street"] = "New Changed St"
         customer.deserialize(serial_customer)
-        self.assertEqual(customer.addresses[0].street, "New Changed St")
+        self.assertEqual(customer.street, "New Changed St")
 
     def test_deserialize_with_key_error(self):
         """It should not Deserialize a customer with a KeyError"""
@@ -217,16 +216,15 @@ class TestCustomer(unittest.TestCase):      # pylint: disable=R0904
 
         # Fetch it back
         customer = Customer.find(customer.id)
-        old_address = customer.addresses[0]
-        print("%r", old_address)
+        old_city = customer.city
+        print("%r", old_city)
         # Change the city
-        old_address.city = "XX"
+        customer.city = "XX"
         customer.update()
 
         # Fetch it back again
         customer = Customer.find(customer.id)
-        address = customer.addresses[0]
-        self.assertEqual(address.city, "XX")
+        self.assertEqual(customer.city, "XX")
 
     def test_deactivate_customer(self):
         """It should deactivate a customer"""
