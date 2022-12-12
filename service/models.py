@@ -78,6 +78,7 @@ class PersistentBase:
 ######################################################################
 #  C U S T O M E R   M O D E L
 ######################################################################
+# pylint: disable=R0902
 class Customer(db.Model, PersistentBase):
     """
     Class that represents a Customer
