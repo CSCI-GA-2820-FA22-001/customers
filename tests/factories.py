@@ -38,3 +38,4 @@ class CustomerFactory(factory.Factory):
     city = factory.Faker("city")
     state = factory.Faker("state_abbr")
     postalcode = factory.Faker("postalcode")
+    
