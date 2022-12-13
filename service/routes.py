@@ -68,19 +68,19 @@ def check_content_type(content_type):
 
 addresses = {
     "name": fields.String(
-        max_length=64, required=True, description="The name of the address (ex.: Home)"
+        zrequired=True, description="The name of the address (ex.: Home)"
     ),
     "street": fields.String(
-        max_length=64, required=True, description="The name of the street and number"
+        required=True, description="The name of the street and number"
     ),
     "city": fields.String(
-        max_length=64, required=True, description="The name of the city"
+        required=True, description="The name of the city"
     ),
     "state": fields.String(
-        max_length=2, required=True, description="The name of the state"
+        required=True, description="The name of the state"
     ),
     "postalcode": fields.String(
-        max_length=16, required=True, description="The postal code is"
+        required=True, description="The postal code is"
     ),
 }
 
@@ -88,10 +88,10 @@ create_model = api.model(
     "Customer",
     {
         "first_name": fields.String(
-            max_length=64, required=True, description="The first name of the Customer"
+            required=True, description="The first name of the Customer"
         ),
         "last_name": fields.String(
-            max_length=64, required=True, description="The last name of the Customer"
+            required=True, description="The last name of the Customer"
         ),
         "active": fields.Boolean(required=True, description="Is the Customer active?"),
         "addresses": fields.List(fields.Nested(api.model("addresses", addresses))),
@@ -218,9 +218,12 @@ class CustomerResource(Resource):
         """
         app.logger.info("Request to delete customer with id: %s", customer_id)
         customer = Customer.find(customer_id)
-        if customer:
-            customer.delete()
-
+        if not customer:
+            abort(
+                status.HTTP_404_NOT_FOUND,
+                f"Customer with id '{customer_id}' was not found.",
+            )
+        customer.delete()
         app.logger.info("customer with ID [%s] delete complete.", customer_id)
         return "", status.HTTP_204_NO_CONTENT
 
