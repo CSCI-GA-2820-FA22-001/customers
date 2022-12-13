@@ -68,27 +68,33 @@ def check_content_type(content_type):
 
 addresses = {
     "name": fields.String(
-        required=True, description="The name of the address (ex.: Home)"
+        max_length=64, required=True, description="The name of the address (ex.: Home)"
     ),
     "street": fields.String(
-        required=True, description="The name of the street and number"
+        max_length=64, required=True, description="The name of the street and number"
     ),
-    "city": fields.String(required=True, description="The name of the city"),
-    "state": fields.String(required=True, description="The name of the state"),
-    "postalcode": fields.String(required=True, description="The postal code is"),
+    "city": fields.String(
+        max_length=64, required=True, description="The name of the city"
+    ),
+    "state": fields.String(
+        max_length=2, required=True, description="The name of the state"
+    ),
+    "postalcode": fields.String(
+        max_length=16, required=True, description="The postal code is"
+    ),
 }
 
 create_model = api.model(
     "Customer",
     {
         "first_name": fields.String(
-            required=True, description="The first name of the Customer"
+            max_length=64, required=True, description="The first name of the Customer"
         ),
         "last_name": fields.String(
-            required=True, description="The last name of the Customer"
+            max_length=64, required=True, description="The last name of the Customer"
         ),
         "active": fields.Boolean(required=True, description="Is the Customer active?"),
-        "addresses": fields.List(fields.Nested(addresses)),
+        "addresses": fields.List(fields.Nested(api.model("addresses", addresses))),
     },
 )
 
@@ -303,6 +309,7 @@ class ActivateResource(Resource):
     """
 
     @api.doc("activate_customers")
+    @api.response(200, "Successfully activated")
     @api.response(404, "Customer not found")
     @api.response(409, "The Customer is not available for activation")
     def put(self, customer_id):
@@ -341,6 +348,7 @@ class DeactivateResource(Resource):
     """
 
     @api.doc("deactivate_customers")
+    @api.response(200, "Successfully deactivated")
     @api.response(404, "Customer not found")
     @api.response(409, "The Customer is not available for deactivation")
     def put(self, customer_id):
