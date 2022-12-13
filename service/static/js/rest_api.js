@@ -74,7 +74,7 @@ $(function () {
         
         let ajax = $.ajax({
             type: "POST",
-            url: "/customers",
+            url: "/api/customers",
             contentType: "application/json",
             data: JSON.stringify(data),
         });
@@ -85,7 +85,7 @@ $(function () {
         });
 
         ajax.fail(function(res){
-            flash_message(res.responseJSON.message)
+            flash_message(res.statusText)
         });
     });
 
@@ -123,7 +123,7 @@ $(function () {
 
         let ajax = $.ajax({
                 type: "PUT",
-                url: `/customers/${id}`,
+                url: `/api/customers/${id}`,
                 contentType: "application/json",
                 data: JSON.stringify(data)
             })
@@ -151,7 +151,7 @@ $(function () {
 
         let ajax = $.ajax({
             type: "GET",
-            url: `/customers/${customer_id}`,
+            url: `/api/customers/${customer_id}`,
             contentType: "application/json",
             data: ''
         })
@@ -164,7 +164,7 @@ $(function () {
 
         ajax.fail(function(res){
             clear_form_data()
-            flash_message(res.responseJSON.message)
+            flash_message(res.statusText)
         });
 
     });
@@ -181,7 +181,7 @@ $(function () {
 
         let ajax = $.ajax({
             type: "DELETE",
-            url: `/customers/${id}`,
+            url: `/api/customers/${id}`,
             contentType: "application/json",
             data: '',
         })
@@ -226,7 +226,7 @@ $(function () {
 
         let ajax = $.ajax({
             type: "GET",
-            url: `/customers${queryString}`,
+            url: `/api/customers${queryString}`,
             contentType: "application/json",
             data: ''
         })

@@ -25,11 +25,11 @@ BASE_URL = "/api/customers"
 ######################################################################
 # pylint: disable=R0904
 class TestYourCustomerServer(TestCase):
-    """ REST API Server Tests """
+    """REST API Server Tests"""
 
     @classmethod
     def setUpClass(cls):
-        """ This runs once before the entire test suite """
+        """This runs once before the entire test suite"""
         app.config["TESTING"] = True
         app.config["DEBUG"] = False
         # Set up the test database
@@ -39,11 +39,11 @@ class TestYourCustomerServer(TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """ This runs once after the entire test suite """
+        """This runs once after the entire test suite"""
         db.session.close()
 
     def setUp(self):
-        """ This runs before each test """
+        """This runs before each test"""
         self.client = app.test_client()
         db.session.query(Customer).delete()  # clean up the last tests
         db.session.commit()
@@ -59,7 +59,9 @@ class TestYourCustomerServer(TestCase):
             print(test_customer)
             response = self.client.post(BASE_URL, json=test_customer.serialize())
             self.assertEqual(
-                response.status_code, status.HTTP_201_CREATED, "Could not create test customer"
+                response.status_code,
+                status.HTTP_201_CREATED,
+                "Could not create test customer",
             )
 
             print(test_customer)
@@ -73,7 +75,7 @@ class TestYourCustomerServer(TestCase):
     ######################################################################
 
     def test_index(self):
-        """ It should call the home page """
+        """It should call the home page"""
         resp = self.client.get("/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         # data = resp.get_json()
@@ -179,7 +181,9 @@ class TestYourCustomerServer(TestCase):
         new_customer = response.get_json()
         logging.debug(new_customer)
         new_customer["first_name"] = "Testing"
-        response = self.client.put(f"{BASE_URL}/{new_customer['id']}", json=new_customer)
+        response = self.client.put(
+            f"{BASE_URL}/{new_customer['id']}", json=new_customer
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         updated_customer = response.get_json()
         self.assertEqual(updated_customer["first_name"], "Testing")
@@ -204,7 +208,7 @@ class TestYourCustomerServer(TestCase):
 
     def test_create_customer_bad_content_type(self):
         """It should not Create a Customer with bad content type"""
-        response = self.client.post(BASE_URL, headers={'Content-Type': 'notJSON'})
+        response = self.client.post(BASE_URL, headers={"Content-Type": "notJSON"})
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     def test_update_customer_not_found(self):
@@ -229,10 +233,10 @@ class TestYourCustomerServer(TestCase):
         """It should Query Customers by Activity"""
         customers = self._create_customers(10)
         test_active = customers[0].active
-        active_list = [customer for customer in customers if customer.active == test_active]
-        logging.info(
-            "Active=%s: %d = %s", test_active, len(active_list), active_list
-        )
+        active_list = [
+            customer for customer in customers if customer.active == test_active
+        ]
+        logging.info("Active=%s: %d = %s", test_active, len(active_list), active_list)
         resp = self.client.get(BASE_URL, query_string=f"active={str(test_active)}")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
