@@ -178,11 +178,11 @@ class TestYourCustomerServer(TestCase):
         # update the customer
         new_customer = response.get_json()
         logging.debug(new_customer)
-        # new_customer["category"] = "unknown"
+        new_customer["first_name"] = "Testing"
         response = self.client.put(f"{BASE_URL}/{new_customer['id']}", json=new_customer)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # updated_customer = response.get_json()
-        # self.assertEqual(updated_customer["category"], "unknown")
+        updated_customer = response.get_json()
+        self.assertEqual(updated_customer["first_name"], "Testing")
 
     ######################################################################
     #  T E S T   S A D   P A T H S
