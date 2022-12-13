@@ -82,7 +82,7 @@ Scenario: Delete a Customer
     And the "Address Name" field should be empty
     When I paste the "ID" field
     And I press the "Retrieve" button
-    Then I should see the message "404 Not Found"
+    Then I should see the message "NOT FOUND"
 
 Scenario: Change Active Status
     When I visit the "Home Page"
