@@ -88,14 +88,14 @@ class Customer(db.Model, PersistentBase):
 
     # Table Schema
     id = db.Column(db.Integer, primary_key=True)
-    f_name = db.Column(db.String(64))
-    l_name = db.Column(db.String(64))
+    f_name = db.Column(db.String())
+    l_name = db.Column(db.String())
     active = db.Column(db.Boolean, default=True)
-    name = db.Column(db.String(64))
-    street = db.Column(db.String(64))
-    city = db.Column(db.String(64))
-    state = db.Column(db.String(2))
-    postalcode = db.Column(db.String(16))
+    name = db.Column(db.String())
+    street = db.Column(db.String())
+    city = db.Column(db.String())
+    state = db.Column(db.String())
+    postalcode = db.Column(db.String())
 
     def __repr__(self):
         return f"<Customer {self.f_name} {self.l_name} id=[{self.id}]>"
